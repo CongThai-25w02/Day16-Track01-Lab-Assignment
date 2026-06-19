@@ -9,7 +9,7 @@ companion-reference: Strategyn_JTBD_Playbook.pdf (giảng viên gửi kèm)
 
 # Lab 2 — JTBD Project Analysis / Dùng JTBD để soi lại dự án nhóm
 
-**Tên dự án / sản phẩm:** _______________  
+**Tên dự án / sản phẩm:** RoboPlanner (AI20K‑162) — lớp thực thi agent CÓ KIỂM CHỨNG cho robot kho mô phỏng, ra lệnh bằng tiếng Việt
 
 > Đây là **file duy nhất** của Lab 2.  
 > File này đồng thời đóng vai trò:
@@ -92,17 +92,17 @@ Phần lớn dự án nhóm viết quá rộng ở bước này, rồi sau đó 
 
 ### Khoanh đúng 1 lát cắt theo 4 điểm
 
-- [ ] **1 nhóm người dùng chính**
-- [ ] **1 hoàn cảnh / tình huống rõ**
-- [ ] **1 job cốt lõi**
-- [ ] **1 workflow đủ cụ thể để vẽ ra được**
+- [x] **1 nhóm người dùng chính** → vận hành viên kho (không phải kỹ sư) ra lệnh cho robot; cùng đội QA/an toàn phải duyệt cho robot hành động
+- [x] **1 hoàn cảnh / tình huống rõ** → giữa ca, bố trí kho thay đổi (vật cản tĩnh chắn lối), cần đổi nhiệm vụ robot mà không gọi kỹ sư
+- [x] **1 job cốt lõi** → đưa đúng 1 vật tới đúng vị trí khi môi trường thay đổi, mà vẫn đủ tin để đưa vào quy trình thật
+- [x] **1 workflow đủ cụ thể để vẽ ra được** → ra lệnh tiếng Việt → agent lập kế hoạch nhiều bước → di chuyển/né vật cản → drop đúng ô → oracle độc lập xác nhận
 
 ### Điền nhanh trước khi làm
 
-- **Dự án của nhóm tôi là:** ___________________________________
-- **Lát cắt tôi chọn để phân tích hôm nay là:** ___________________________________
+- **Dự án của nhóm tôi là:** RoboPlanner (AI20K‑162) — một agent (LLM + LangGraph, 7 node parse→perceive→plan→act→observe→replan→summarize) lập kế hoạch tác vụ cho robot kho **mô phỏng 2D**; điểm khác biệt là **lớp thực thi CÓ KIỂM CHỨNG**: đọc trạng thái thật, trace audit được, biết "nói không" khi bất khả thi.
+- **Lát cắt tôi chọn để phân tích hôm nay là:** Phạm vi đo của v2 (đã "thu nhỏ" theo mentor) — *di chuyển đúng 1 vật qua kho có chướng ngại tĩnh, drop đúng ô, oracle độc lập chấm*, kèm 2 thuộc tính bắt buộc: trace audit được và biết "nói không".
 - **Vì sao tôi chọn lát cắt này:**  
-  > ___________________________________
+  > Vì tôi phụ trách Agent core + Product nên cần nhìn rõ *job thật* nằm ở đâu chứ không chỉ ở tính năng. Lát cắt này là phần nhóm cam kết đo được bằng oracle độc lập, đủ hẹp để kiểm chứng nghiêm túc trong ~2 tuần, và là nơi lộ ra khác biệt thật của dự án (kiểm chứng được), thay vì khoe nhiều tính năng không đo được.
 
 ### Viết quá rộng vs viết sắc hơn
 
@@ -121,13 +121,13 @@ Phần lớn dự án nhóm viết quá rộng ở bước này, rồi sau đó 
 ### Tóm tắt dự án trong 3 dòng
 
 1. **Nhóm tôi đang nghĩ mình đang giải quyết vấn đề gì?**  
-   > ___________________________________
+   > Điều khiển robot kho hôm nay phải lập trình từng bước, vỡ khi môi trường đổi, và là hộp đen nên đội an toàn/QA không dám đưa vào quy trình thật. Rào cản số 1 không phải "model đủ thông minh chưa" mà là "có audit được, có dám tin không".
 
 2. **Người dùng chính hiện nhóm đang nhắm tới là ai?**  
-   > ___________________________________
+   > Vận hành viên kho/nhà máy muốn điều khiển robot bằng ngôn ngữ thay vì lập trình. Phụ: kỹ sư tích hợp (prototype logic nhiệm vụ) và đội an toàn/QA cần kế hoạch kiểm chứng được.
 
 3. **Hiện tại người dùng đó đang giải quyết vấn đề này bằng cách nào?**  
-   > ___________________________________
+   > Lập trình cứng từng bước / teach‑pendant + luật WMS cố định; mỗi lần bố trí đổi thì gọi kỹ sư lập lại; muốn "thông minh" thì thử gọi LLM trần — nhưng LLM trần bịa kết quả nên QA không duyệt.
 
 ---
 
@@ -139,21 +139,21 @@ Phần lớn dự án nhóm viết quá rộng ở bước này, rồi sau đó 
 ### Trả lời 4 câu ngắn
 
 1. **Ai đang gặp vấn đề này?**  
-   > ___________________________________
+   > Kho/nhà máy dùng robot di chuyển hàng: vận hành viên (không phải kỹ sư) phải chạy nhiệm vụ hằng ngày, và đội an toàn/QA phải chịu trách nhiệm khi cho robot hành động.
 
 2. **Vấn đề xuất hiện trong hoàn cảnh nào?**  
-   > ___________________________________
+   > Khi bố trí kho thay đổi (vật cản, pallet, lối đi đổi) làm kịch bản lập sẵn vỡ; khi cần đổi nhiệm vụ gấp; và khi phải chứng minh cho QA rằng robot làm đúng & an toàn trước khi đưa vào quy trình thật.
 
 3. **Hiện tại họ đang dùng giải pháp thay thế nào?**  
-   > ___________________________________
+   > Lập trình cứng từng bước + luật cố định; gọi kỹ sư mỗi khi đổi; hoặc thử một lời gọi LLM không grounding (không đọc trạng thái thật, không audit được).
 
 4. **Vì sao đây là thời điểm đáng giải?**  
-   > ___________________________________
+   > "Bộ não" (LLM) giờ là commodity, đủ rẻ để lập & sửa kế hoạch theo ngôn ngữ tự nhiên. Thứ còn thiếu để deploy không phải model giỏi hơn, mà là **lớp thực thi đáng tin** quanh nó (grounded + trace + oracle). Đây là khoảng trống mà dự án nhắm vào.
 
 ### Tóm tắt market context trong 3-4 dòng
 
-> _______________________________________________  
-> _______________________________________________
+> Robot kho hiện cứng nhắc và là hộp đen, nên mỗi thay đổi đều tốn kỹ sư còn đội rủi ro thì không dám ký duyệt.  
+> Mặt khác, agent LLM tuy hiểu ngôn ngữ và biết lập kế hoạch nhưng hay "bịa", nên không qua được cửa compliance. Điểm đáng giải bây giờ là biến agent thành thứ **audit được + không hallucinate**, vì đó mới là điều kiện để doanh nghiệp dám đưa vào sản xuất.
 
 ---
 
@@ -174,9 +174,9 @@ Phần lớn dự án nhóm viết quá rộng ở bước này, rồi sau đó 
 
 ### Điền
 
-- **Job executor của dự án này là:** ___________________________________
+- **Job executor của dự án này là:** Vận hành viên kho ra lệnh cho robot (người trực tiếp gõ "đưa pallet A tới chuyền 3" và cần việc được làm). **Lưu ý quan trọng nổi lên khi soi JTBD:** người trực tiếp làm *job kiểm chứng* — tức "đọc trace, xác nhận và dám ký duyệt cho agent hành động" — lại là **đội QA/an toàn (người duyệt deploy)**. Đây mới là executor của phần giá trị lõi (lớp kiểm chứng) của dự án.
 - **Vì sao tôi tin đây là người trực tiếp "thuê" giải pháp để làm job:**  
-  > ___________________________________
+  > Vận hành viên là người trực tiếp ra lệnh và chịu việc kẹt khi robot vỡ kịch bản, nên họ "thuê" agent để hoàn thành cú di chuyển. Nhưng lớp differentiator (grounded + trace + abstain) lại được **QA/đội rủi ro** "thuê" để làm job của họ: tin và ký duyệt mà vẫn truy được trách nhiệm. Dự án thực ra phục vụ 2 executor, và phần khó nhất là làm hài lòng người duyệt.
 
 ---
 
@@ -200,23 +200,23 @@ Phần lớn dự án nhóm viết quá rộng ở bước này, rồi sau đó 
 
 ### 3 tiêu chí tự kiểm
 
-- [ ] Nếu bỏ tool hiện tại đi, job này vẫn còn tồn tại
-- [ ] Trong câu không có tên sản phẩm, AI, chatbot, app, màn hình
-- [ ] Câu đang mô tả **điều user muốn hoàn thành**, không phải thứ product đang làm
+- [x] Nếu bỏ tool hiện tại đi, job này vẫn còn tồn tại
+- [x] Trong câu không có tên sản phẩm, AI, chatbot, app, màn hình
+- [x] Câu đang mô tả **điều user muốn hoàn thành**, không phải thứ product đang làm
 
 ### Bản nháp 1
 
 **Core JTBD bản nháp:**  
-> _______________________________________________
+> Dùng agent LLM để điều khiển robot kho bằng tiếng Việt.
 
 ### Gạch bỏ từ solution nếu có
 
-- Các từ solution tôi đang lỡ nhét vào câu: _________________________________
+- Các từ solution tôi đang lỡ nhét vào câu: "agent LLM", "robot", "bằng tiếng Việt" (đây là solution và giao diện đầu vào, không phải job). Ngôn ngữ tự nhiên là *cách ra lệnh*, không phải điều user muốn hoàn thành.
 
 ### Bản chốt
 
 **Core JTBD cuối cùng:**  
-> _______________________________________________
+> Đưa đúng hàng tới đúng vị trí trong kho khi bố trí liên tục thay đổi, mà không phải lập trình lại từng bước và vẫn kiểm soát được rủi ro để dám đưa vào quy trình thật.
 
 ---
 
@@ -239,15 +239,15 @@ When [trigger], I want to [motivation], so I can [outcome].
 
 | # | Trigger / When | Motivation / I want to | Outcome / so I can | Điều story này cho thấy |
 |---|---|---|---|---|
-| JS1 | | | | |
-| JS2 | | | | |
-| JS3 | | | | |
+| JS1 | Giữa ca có vật cản/pallet lạ chắn lối robot vẫn quen chạy | Ra lệnh lại bằng tiếng Việt và để robot tự tìm đường vòng | Không phải gọi kỹ sư và không dừng cả dây chuyền | Pain ở môi trường động — chỗ kịch bản cứng vỡ |
+| JS2 | Cần đổi nhiệm vụ robot ("đưa pallet A tới chuyền 3") mà tôi không biết lập trình | Gõ/nói bằng tiếng Việt là robot hiểu và làm | Tự điều việc mà không phụ thuộc kỹ sư | Pain ở rào cản ngôn ngữ / không lập trình được |
+| JS3 | Robot báo "đã xong" một nhiệm vụ sắp đưa vào quy trình thật | (QA) xem lại từng bước nó đọc gì–làm gì kèm bằng chứng độc lập | Dám ký duyệt và vẫn truy được trách nhiệm khi có sự cố | Pain ở niềm tin/audit — chính là moat của dự án |
 
 ### Tự kiểm nhanh
 
-- [ ] Mỗi story là một **tình huống thật**, không phải slogan chung chung
-- [ ] 3 story không trùng hệt nhau
-- [ ] Sau khi đọc 3 story, tôi hình dung được lúc nào product của mình đáng xuất hiện
+- [x] Mỗi story là một **tình huống thật**, không phải slogan chung chung
+- [x] 3 story không trùng hệt nhau (môi trường động / rào cản ngôn ngữ / niềm tin–audit)
+- [x] Sau khi đọc 3 story, tôi hình dung được lúc nào product của mình đáng xuất hiện
 
 ---
 
@@ -268,14 +268,14 @@ Qua JTBD lens, đối thủ không chỉ là app cùng ngành.
 
 | Alternative hiện tại | User đang thuê nó để làm gì? | Nó làm tốt gì? | Nó fail ở đâu? | Switching cost hiện tại cao hay thấp? |
 |---|---|---|---|---|
-| Alt 1 | | | | |
-| Alt 2 | | | | |
-| Alt 3 | | | | |
+| Lập trình cứng từng bước / teach‑pendant + luật WMS cố định | Cho robot chạy đúng tuyến đã định | Ổn định, tất định, dễ chứng nhận an toàn trong môi trường tĩnh | Vỡ khi bố trí đổi; mỗi thay đổi phải gọi kỹ sư; vận hành viên không tự đổi được | Cao (đã tích hợp, đội an toàn đã duyệt) |
+| Gọi kỹ sư tích hợp mỗi khi cần đổi nhiệm vụ/đường đi | Xử lý ca mới ngoài kịch bản | Linh hoạt theo người, đúng bối cảnh cụ thể | Chậm, tốn tiền, gây downtime; không scale | Trung bình |
+| Một lời gọi LLM trần (không grounding) | Thử cho agent "thông minh" tự sinh kế hoạch | Hiểu ngôn ngữ, ra kế hoạch nhanh | Bịa kết quả, không đọc trạng thái thật, không audit được → QA không bao giờ duyệt | Thấp về tiền, nhưng **không deploy nổi** |
 
 ### Kết luận nhanh
 
 **Nếu project của tôi biến mất hôm nay, user nhiều khả năng sẽ quay về:**  
-> _______________________________________________
+> Lập trình cứng + gọi kỹ sư khi cần đổi (Alt 1 + Alt 2) — chấp nhận cứng nhắc và tốn người để đổi lấy thứ đội an toàn đã duyệt. Baseline mà RoboPlanner phải vượt là: vừa linh hoạt (đổi bằng lời, tự replan) **vừa đủ tin để duyệt** — không alternative nào hiện có cả hai.
 
 ---
 
@@ -310,23 +310,23 @@ Mục tiêu là nhìn ra:
 
 | Step | Trong workflow này user đang cố làm gì? | Hôm nay họ đang dùng gì? | Friction / pain hiện tại | Mức đau |
 |---|---|---|---|---|
-| Define | | | | Low / Med / High |
-| Locate | | | | Low / Med / High |
-| Prepare | | | | Low / Med / High |
-| Confirm | | | | Low / Med / High |
-| Execute | | | | Low / Med / High |
-| Monitor | | | | Low / Med / High |
-| Modify | | | | Low / Med / High |
-| Conclude | | | | Low / Med / High |
+| Define | Diễn đạt nhiệm vụ ("đưa pallet A tới chuyền 3") cho robot hiểu | Vận hành viên mô tả → kỹ sư dịch sang mã | Rào cản ngôn ngữ: không tự ra lệnh được, phải qua kỹ sư | High |
+| Locate | Xác định vật đích và ô/khu đích trong không gian | Kỹ sư mã hóa tọa độ; vận hành viên ước lượng bằng mắt | Mapping thủ công, dễ sai tên/vị trí | Med |
+| Prepare | Lập đường đi né chướng ngại trước khi chạy | Tuyến cố định lập sẵn | Tuyến cứng, không tự né khi có vật cản mới | High |
+| Confirm | Kiểm kế hoạch có hợp lệ/khả thi/an toàn trước khi chạy | Tin chương trình hoặc nhờ kỹ sư review | Hộp đen — không tự kiểm được; không biết khi nào bất khả thi | High |
+| Execute | Di chuyển / pick / drop tới đích | Robot chạy script (`move_to·pick·drop`) | Cứng nhắc; lệch một chút là fail, không tự xoay | Med |
+| Monitor | Theo dõi robot có đang làm đúng & đọc đúng trạng thái thật | Camera, người đứng nhìn, status robot tự khai | Không tin status tự khai; thiếu trace từng bước để soi | High |
+| Modify | Lập lại kế hoạch khi vật cản xuất hiện / bố trí đổi | Dừng, gọi kỹ sư, lập trình lại | Chậm, tốn tiền, downtime; thường phải dừng việc | High |
+| Conclude | Xác nhận đã xong đúng + có bằng chứng để audit | Tin robot báo "done"; ít log audit | Không có xác nhận độc lập; QA thiếu hồ sơ để ký duyệt | High |
 
 ### Chốt 2 bước đau nhất
 
-**Bước đau nhất #1:** _________________________________  
-**Bước đau nhất #2:** _________________________________
+**Bước đau nhất #1:** Confirm + Monitor + Conclude — tin & kiểm chứng được robot đang/đã làm đúng (hộp đen, không audit được)  
+**Bước đau nhất #2:** Modify — lập lại kế hoạch khi môi trường đổi mà không phải gọi kỹ sư lập trình lại
 
 **Vì sao đây là nơi đáng chú ý nhất:**  
-> _______________________________________________  
-> _______________________________________________
+> Theo chính luận điểm của nhóm, rào cản số 1 để deploy không phải model giỏi hơn mà là **audit được + dám tin** — pain này nằm ở cụm Confirm/Monitor/Conclude.  
+> Modify là pain vận hành tốn kém nhất (downtime + kỹ sư). Giải được 2 cụm này thì agent mới vừa linh hoạt vừa qua được cửa compliance — đúng chỗ không alternative nào làm được.
 
 ---
 
@@ -345,16 +345,16 @@ Sau khi map workflow, mới hỏi:
 
 | Step | AI nên giúp bằng cách nào? | Vì sao AI hợp ở đây? | Rủi ro chính nếu dùng AI |
 |---|---|---|---|
-| 1 | | | |
-| 2 | | | |
+| Confirm / Monitor / Conclude (lớp kiểm chứng) | Mọi tool‑call đọc trạng thái thật từ sim (grounded); hiển thị trace *suy nghĩ → tool → tham số → kết quả*; oracle độc lập chấm; biết "nói không" khi bất khả thi | Agent LLM vừa hành động vừa giải thích được từng bước bằng ngôn ngữ; cặp grounding + oracle biến hộp đen thành thứ audit được — đúng điều QA cần để ký duyệt | Nếu grounding/trace sai hoặc agent bịa "done" thì niềm tin sụp — đúng là bug đang làm Bảng A = 0% hiện nay |
+| Modify (replan) | Khi gặp vật cản, agent lập lại đường đi từ trạng thái thật hiện tại, không cần lập trình lại | Lập kế hoạch từ mục tiêu + quan sát chính là vòng lặp agent (parse→plan→act→observe→replan) | Replan có thể vi phạm ràng buộc ngầm/an toàn; latency cao (~6s/bước) chưa đạt mục tiêu <3s |
 
 ### Kết luận nhanh
 
 **AI leverage point quan trọng nhất của dự án tôi là:**  
-> _______________________________________________
+> Lớp thực thi **CÓ KIỂM CHỨNG** ở cụm Confirm/Monitor/Conclude — grounded + trace audit được + biết "nói không". Đây là chỗ biến agent từ "thông minh nhưng không ai dám dùng" thành "dám đưa vào quy trình thật".
 
 **Vì sao không phải ở bước khác:**  
-> _______________________________________________
+> Vì "bộ não" (khả năng lập kế hoạch của LLM) là **commodity** — ai cũng gọi được model. Giao diện ra lệnh tiếng Việt chỉ là input, dễ sao chép. Tốc độ thực thi cũng không phải điểm khác biệt. Thứ tạo giá trị deploy được và khó sao chép chính là làm cho hành động của agent **đáng tin và audit được** — nên leverage phải đặt ở đó.
 
 ---
 
@@ -373,13 +373,13 @@ vì [giá trị rõ nhất].
 
 ### Bản hypothesis của tôi
 
-> _______________________________________________  
-> _______________________________________________
+> Nếu chúng ta giúp **vận hành viên kho và đội QA/an toàn** tin và kiểm chứng được hành động của robot ở **bước Confirm/Monitor/Conclude**, bằng cách **mọi hành động đọc trạng thái thật + trace audit từng bước + oracle độc lập chấm + biết "nói không" khi bất khả thi**,  
+> thì họ sẽ chuyển từ **lập trình cứng + gọi kỹ sư (hộp đen)** sang **để agent tự lập kế hoạch nhưng có kiểm chứng**, vì **lần đầu họ dám đưa agent vào quy trình thật mà vẫn audit được khi có sự cố**.
 
 ### Tín hiệu sớm nếu hypothesis này đúng
 
-1. _______________________________________________
-2. _______________________________________________
+1. QA/đội rủi ro chấm "trace đủ để hiểu & tin" đạt ngưỡng (audit pass ≥ 90% theo rubric cố định) trên mẫu ca thật.
+2. Tỷ lệ hành động grounded ≥ 95% và hallucinated‑done = 0% giữ ổn định qua nhiều seed → người duyệt bắt đầu ký duyệt đề xuất của agent mà không cần sửa.
 
 ---
 
@@ -399,15 +399,16 @@ Job story chưa có research vẫn chỉ là **giả thuyết tốt hơn**, chư
 
 | Assumption | Vì sao assumption này rủi ro? | Tôi đang có bằng chứng gì? | Cần validate bằng cách nào tiếp theo? |
 |---|---|---|---|
-| A1 | | | |
-| A2 | | | |
-| A3 | | | |
-| A4 | | | |
-| A5 | | | |
+| A1 — Người thật sự "thuê" lớp kiểm chứng là ai (vận hành viên hay QA/người duyệt) | Đang dồn UX cho vận hành viên, trong khi người quyết deploy lại là đội rủi ro → xây cho nhầm người | Pilot proposal đã nghiêng về người duyệt; chưa có phỏng vấn thật | Phỏng vấn cả 2 vai; xác định ai là người ký duyệt đưa agent vào quy trình |
+| A2 — Pain "hộp đen, không dám tin" đủ lớn để đổi | Có thể doanh nghiệp tắc vì thiếu người chứ không phải vì compliance | Luận điểm nhóm + tiêu chí chọn pilot (quy trình đang tắc vì compliance) | Chọn quy trình có ground truth, sai đo được bằng tiền/thời gian; hỏi xem có thật đang tắc vì compliance |
+| A3 — "Audit được + không bịa" là điều kiện để mua, không phải nice‑to‑have | Nếu chỉ là "thích thì tốt", giá trị không đủ để trả tiền | Chưa có người mua doanh nghiệp trả tiền | Pilot 90 ngày, đo % đề xuất được ký duyệt lên production (mục tiêu ≥70%) |
+| A4 — Agent lõi thật sự chạy được end‑to‑end (sinh tool‑call hợp lệ, tới đích) | Bảng A (agent thật) hiện success = 0% do bug function‑calling; chưa có gì để "kiểm chứng" nếu agent không hành động được | Đã xác định root cause + vá P0‑1; abstain đúng 2/2; hallucinated‑done = 0% | Chạy lại eval đa seed (`run_eval_v2.py --seeds 3`) tới khi success > 0 ổn định |
+| A5 — Phương pháp (grounded+trace+oracle) chuyển được từ robot sim sang nghiệp vụ thật | Domain chứng minh là robot kho, nhưng giá trị bán lại ở quy trình nghiệp vụ (đối soát/duyệt) | Chưa de‑risk; mới là proof‑of‑method | Pilot shadow mode trên dữ liệu lịch sử 1 quy trình; dựng oracle từ ground truth khách |
 
 ### Assumption nguy hiểm nhất nếu tôi đang sai
 
-> _______________________________________________
+> Trước mắt (chặn cứng): **A4** — agent lõi đang 0% (Bảng A). Nếu agent không tự sinh được hành động hợp lệ thì cả lớp kiểm chứng không có gì để kiểm; đây cũng là Ưu tiên #1 của nhóm.  
+> Ở tầng JTBD/sản phẩm: **A1** — nếu chọn nhầm job executor (xây cho vận hành viên trong khi người thật sự "thuê" lớp kiểm chứng là đội duyệt/rủi ro) thì sản phẩm tối ưu sai người và cả hypothesis lệch theo.
 
 ---
 
@@ -431,9 +432,9 @@ Job story chưa có research vẫn chỉ là **giả thuyết tốt hơn**, chư
 
 | Ý phản biện tôi nghe được | Nó chạm vào phần nào? | Tôi sẽ giữ / sửa gì? |
 |---|---|---|
-| | | |
-| | | |
-| | | |
+| "Job executor là vận hành viên hay đội QA? Người ký duyệt deploy mới là người thật sự mua lớp kiểm chứng." | A1 + job executor | Sửa: nâng QA/người duyệt thành executor của job kiểm chứng; vận hành viên là người dùng giao diện ra lệnh |
+| "Agent đang 0% (Bảng A) — nói 'auditable' lúc này có sớm không?" | A4 + AI leverage point | Giữ leverage point nhưng đặt cổng: phải có success > 0 ổn định rồi mới được tuyên bố moat |
+| "Robot kho sim có thuyết phục người mua nghiệp vụ không? Có nên chuyển hẳn sang đối soát/duyệt?" | A5 + market context | Giữ sim làm proof‑of‑method; định vị pilot ở quy trình back‑office (đã có trong PILOT_PROPOSAL) |
 
 ---
 
@@ -442,51 +443,53 @@ Job story chưa có research vẫn chỉ là **giả thuyết tốt hơn**, chư
 ### Sau khi nghe phản biện, tôi thay đổi gì?
 
 - [ ] Giữ nguyên `job executor`
-- [ ] Sửa `job executor`
-- [ ] Giữ nguyên `core JTBD`
+- [x] Sửa `job executor`
+- [x] Giữ nguyên `core JTBD`
 - [ ] Sửa `core JTBD`
 - [ ] Giữ nguyên `AI leverage point`
-- [ ] Sửa `AI leverage point`
-- [ ] Giữ nguyên `product hypothesis`
+- [x] Sửa `AI leverage point`
+- [x] Giữ nguyên `product hypothesis`
 - [ ] Sửa `product hypothesis`
 
 ### Vì sao tôi giữ / sửa?
 
-> _______________________________________________  
-> _______________________________________________
+> Sửa **job executor**: tách rõ hai vai — vận hành viên (người ra lệnh) và QA/người duyệt (người thật sự "thuê" lớp kiểm chứng và quyết định deploy). Phần giá trị lõi phục vụ vai thứ hai.  
+> Giữ **core JTBD** vì qua phản biện vẫn đứng vững (đưa hàng đúng chỗ khi môi trường đổi, kiểm soát được rủi ro).  
+> Sửa **AI leverage point**: nhấn rõ lớp kiểm chứng là moat, nhưng thêm cổng "agent phải có success > 0 trước khi tuyên bố".  
+> Giữ **product hypothesis** về bản chất (chỉ bổ sung vai QA cho rõ).
 
 ### Version cuối cùng tôi nộp
 
 **Job executor:**  
-> _______________________________________________
+> Vận hành viên kho (người ra lệnh tiếng Việt) — và quan trọng hơn cho phần lõi: đội QA/an toàn (người duyệt cho agent hành động) là executor của job kiểm chứng.
 
 **Core JTBD:**  
-> _______________________________________________
+> Đưa đúng hàng tới đúng vị trí trong kho khi bố trí liên tục thay đổi, mà không phải lập trình lại từng bước và vẫn kiểm soát được rủi ro để dám đưa vào quy trình thật.
 
 **2 bước đau nhất trong workflow:**  
-> _______________________________________________
+> Confirm/Monitor/Conclude (tin & kiểm chứng được robot làm đúng) và Modify (replan khi môi trường đổi).
 
 **AI leverage point chính:**  
-> _______________________________________________
+> Lớp thực thi CÓ KIỂM CHỨNG: mọi hành động đọc trạng thái thật (grounded) + trace audit từng bước + oracle độc lập chấm + biết "nói không" khi bất khả thi.
 
 **Product hypothesis:**  
-> _______________________________________________
+> Nếu giúp vận hành viên + QA tin và kiểm chứng được hành động robot ở bước Confirm/Monitor/Conclude — grounded + trace + oracle + abstain — thì họ chuyển từ lập trình cứng/hộp đen sang agent có kiểm chứng, vì lần đầu dám đưa agent vào quy trình thật mà vẫn audit được.
 
 **Assumption cần validate đầu tiên:**  
-> _______________________________________________
+> A4 — vá xong bug function‑calling, chạy lại eval đa seed để Bảng A có success > 0 ổn định (vì nếu agent lõi chưa chạy thì không có gì để kiểm chứng).
 
 ---
 
 ## Checklist trước khi nộp
 
-- [ ] Tôi đã khoanh đúng 1 lát cắt cụ thể của dự án.
-- [ ] Tôi đã phân biệt được `job executor` với buyer / influencer.
-- [ ] `Core JTBD` của tôi không nhét solution vào câu.
-- [ ] Tôi đã viết đủ 3 `job stories`.
-- [ ] Tôi đã điền `JTBD lite map` và khoanh ra 2 bước đau nhất.
-- [ ] Tôi đã chỉ ra `AI leverage point` thay vì nhảy thẳng vào feature list.
-- [ ] Tôi đã ghi rõ `assumptions to validate`.
-- [ ] Tôi đã sửa version cuối sau khi share trong bàn.
+- [x] Tôi đã khoanh đúng 1 lát cắt cụ thể của dự án.
+- [x] Tôi đã phân biệt được `job executor` với buyer / influencer.
+- [x] `Core JTBD` của tôi không nhét solution vào câu.
+- [x] Tôi đã viết đủ 3 `job stories`.
+- [x] Tôi đã điền `JTBD lite map` và khoanh ra 2 bước đau nhất.
+- [x] Tôi đã chỉ ra `AI leverage point` thay vì nhảy thẳng vào feature list.
+- [x] Tôi đã ghi rõ `assumptions to validate`.
+- [x] Tôi đã sửa version cuối sau khi share trong bàn.
 
 ---
 
@@ -496,3 +499,6 @@ Job story chưa có research vẫn chỉ là **giả thuyết tốt hơn**, chư
 - So sánh `current alternatives` với project của nhóm theo 3 tiêu chí: nhanh hơn, rẻ hơn, tin hơn.
 - Tự hỏi lại một câu khó: **nếu không dùng AI, project này còn tạo giá trị không?**
 - Nếu câu trả lời là "không", hãy xem lại liệu nhóm đang giải **job thật** hay chỉ đang tìm chỗ để nhét AI.
+
+> **Trả lời câu hỏi khó cho dự án này:** Job "đưa hàng đúng chỗ trong kho đang thay đổi, đủ tin để đưa vào quy trình thật" tồn tại độc lập với AI — hôm nay vẫn đang được giải bằng lập trình cứng + kỹ sư. AI (agent có kiểm chứng) là cách giải mới cho phép đổi bằng lời + tự replan + vẫn audit được.  
+> **Cảnh báo trung thực:** nếu bỏ phần "có kiểm chứng" (grounded/trace/abstain) thì chỉ còn "một lời gọi LLM" — không tạo được giá trị deploy. Vậy giá trị thật của dự án nằm ở **lớp kiểm chứng**, không phải ở việc "có AI". Đây đúng là lý do nhóm đặt North Star là "lớp thực thi CÓ KIỂM CHỨNG" thay vì "AI điều khiển robot" — tín hiệu cho thấy nhóm đang giải job thật, AI chỉ là phương tiện. (So sánh nhanh theo 3 tiêu chí: **nhanh hơn** lập trình lại bằng tay khi đổi việc; chưa chắc **rẻ hơn** lúc đầu; ăn điểm ở **tin hơn** nhờ audit — nhưng chỉ đúng khi A4 được giải.)
